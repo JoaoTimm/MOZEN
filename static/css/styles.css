@@ -35,6 +35,11 @@ background-size: cover;
 }
 
 
+.media-body {
+    -ms-flex: 1;
+    flex: 1;
+  padding: 3%;
+}
 
 
 

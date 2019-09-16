@@ -1,35 +1,73 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="">
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+    <img rel="prefetch" class="" src="{{ url_for('static', filename='img/svg/moz_logo.svg') }}"
+        alt="triangle with all three sides equal" height="" width="80px"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-  </button>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if active_page == 'home' else '' }}" href="{{ url_for('index')}}">Home</a>
+            </li>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
+            {#
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if active_page == 'blog' else '' }}" href="{{ url_for('blog')}}">Blog</a>
+            </li>
+            #}
+            {#############################}
+            <div class="dropdown">
+                <span class="nav-link dropdown-toggle" data-toggle="dropdown">Blog
+                <span class="caret"></span></span>
+                <ul class="dropdown-menu">
+                    <a class="nav-link {{ 'active' if active_page == 'blog' else '' }}" href="{{ url_for('blog.all_posts')}}">All Posts</a>
+                    <a class="nav-link {{ 'active' if active_page == 'new_post' else '' }}" href="{{ url_for('blog.new')}}">New Post</a>
+                </ul>
+            </div>
+
+        </ul>
+
+    <img class="rounded-circle account-img" src="{{ image_file }}" style="width: 45px" alt="">
+
+        {#<span style="margin-left: 1%">{{ current_user.username }}</span>#}
+
+        <span class="navbar-text">
+
+            {#AUTH S#}
+            {% if current_user.is_authenticated %}
+
+            <div class="dropdown">
+                <span class="nav-link dropdown-toggle" data-toggle="dropdown">
+
+
+                    {{ current_user.username }}
+
+                <span class="caret"></span></span>
+                <ul class="dropdown-menu">
+
+
+             <li class="nav-item">
+                <a class="nav-link {{ 'active' if active_page == 'about' else '' }}" href="{{ url_for('account.update_account')}}">Profile</a>
+            </li>
+                        <li class="nav-item">
+                <a class="nav-link {{ 'active' if active_page == 'about' else '' }}" href="{{ url_for('auth.logout')}}">Sign Out</a>
+            </li>
+                     {#AUTH E#}
+
+                </ul>
+            </div>
+{% else %}
+            {#NO AUTH S#}
+<nav class="nav">
+                <a class="nav-link {{ 'active' if active_page == 'about' else '' }}" href="{{ url_for('auth.sign_up')}}">Sign Up</a>
+
+                <a class="nav-link {{ 'active' if active_page == 'about' else '' }}" href="{{ url_for('auth.sign_in')}}">Sign In</a>
+</nav>
+                    {#NO AUTH E#}
+                     {% endif %}
+            </span>
+
+    </div>
 </nav>

@@ -1,0 +1,70 @@
+{% extends "global_layouts/main_single.html" %}
+
+{% block head %} {#-- FOOTER S --#}
+
+{% endblock head %} {#-- FOOTER E --#}
+
+
+{% block content %} {#-- FOOTER S --#}
+
+
+<div class="container">
+
+<div class="card-columns">
+
+        {% for i in posts.items %}
+        <div class="card">
+            <div class="card-body rounded-lg">
+                <h5 class="card-title">{{ i.title }}</h5>
+                <p class="card-text">{{ i.body|truncate(240)|safe }}.</p>
+                <small>Author: {{ i.author.username }}</small>
+                <ul class="nav {#justify-content-center#}">
+                    <li class="nav-item nav_btn_space">
+                        <a href="{{ url_for('blog.post', slug = i.slug ) }}" class="btn btn-success btn-sm" role="button">View</a>
+                    </li>
+                    {#<li class="nav-item nav_btn_space">
+                        <a href="{{ url_for('update_post', id=i.id) }}" class="btn btn btn-warning btn-sm" role="button">Update</a>
+                    </li>
+                    <li class="nav-item nav_btn_space">
+                        DELETE S
+                        <form action="{{ url_for('delete_post', id=i.id) }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <input class="btn btn-danger btn-sm" type="submit" value="Delete">
+                        </form>
+                        DELETE E
+                    </li>#}
+                    <li>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+<div style="padding-bottom: 10%"></div>
+{#######################################################}
+<div class="text-center">
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+    {% if posts.page == page_num %}
+    <a class="btn btn-info mb-4" href="{{ url_for('blog.all_posts', page=page_num) }}">{{ page_num }}</a>
+    {% else %}
+    <a class="btn btn-outline-info mb-4" href="{{ url_for('blog.all_posts', page=page_num) }}">{{ page_num }}</a>
+    {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+</div>
+{#################################################}
+
+</div>
+
+
+{% endblock content %} {#-- FOOTER E --#}
+
+{% block footer %} {#-- FOOTER S --#}
+{% endblock footer %} {#-- FOOTER E --#}

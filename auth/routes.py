@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from flask_login import login_required, logout_user, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from htmlmin.minify import html_minify
 from app import login_manager
 from auth.auth_forms import SignUp, SignIn
 from models import User, db
@@ -52,6 +52,7 @@ def sign_in():
                     return redirect(url_for('index'))
     elif current_user.is_authenticated:
         if 'url' in session:
+            flash('You are already Signed In successfully.')
             return redirect(session['url'])
         else:
             return redirect(url_for('index'))

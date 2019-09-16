@@ -10,8 +10,14 @@
 
 
 {% block content %} {#-- FOOTER S --#}
-
-
+     <div class="text-center">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning text-center">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
 <div class="container g_shadow rounded-lg animation-target">
 
         <form action="{{ url_for('blog.new') }}" method="post">

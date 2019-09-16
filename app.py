@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 from flask_assets import Environment, Bundle
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
+from htmlmin.minify import html_minify
 
 app = Flask(__name__)
 
@@ -37,11 +38,14 @@ assets.register('styles_css', css)
 
 # ######## BLUEPRINTS IMPORTS S ########
 
+
+from account.routes import account
 from auth.routes import auth
 from blog.routes import blog
 
-app.register_blueprint(blog, url_prefix='/blog')
+app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(blog, url_prefix='/blog')
 
 # ######## BLUEPRINTS IMPORTS E #########
 try:
@@ -54,7 +58,12 @@ except ImportError as e:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+        rendered_html = render_template('index.html', image_file=image_file)
+        return html_minify(rendered_html)
+    rendered_html = render_template('index.html')
+    return html_minify(rendered_html)
 
 
 if __name__ == '__main__':

@@ -23,6 +23,7 @@ class SignUp(FlaskForm):
         Email(message='That\'s not a valid email address.'),
         validators.DataRequired(message='That\'s not a valid email address.')
     ])
+
     password_hash: StringField = PasswordField('Password', validators=[
         validators.DataRequired(message="Please enter a password."),
         Length(min=password_length, message="Too Short"),
