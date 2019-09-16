@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_required, logout_user, login_user
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
+from flask_login import login_required, logout_user, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import login_manager
@@ -35,25 +35,26 @@ def load_user(user_id: int):
     return User.query.get(int(user_id))
 
 
-@login_manager.unauthorized_handler
-def handle_needs_login():
-    flash("You have to be logged in to access this page.")
-    return redirect(url_for('auth.sign_in', next=request.endpoint))
-
-
 @auth.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
-    form = SignIn()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            if check_password_hash(user.password_hash, form.password_hash.data):
-                print("Password ok")
+    global form
+    if not current_user.is_authenticated:
+        form = SignIn()
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user and check_password_hash(user.password_hash, form.password_hash.data):
                 # login_user(user, remember=form.remember.data)
                 login_user(user, remember=True)
-                # print(form.remember.data)
                 flash('You Sing In successfully.')
-                return redirect(url_for('auth.home'))
+                if 'url' in session:
+                    return redirect(session['url'])
+                else:
+                    return redirect(url_for('index'))
+    elif current_user.is_authenticated:
+        if 'url' in session:
+            return redirect(session['url'])
+        else:
+            return redirect(url_for('index'))
     return render_template('auth/sign-in.html', form=form)
 
 

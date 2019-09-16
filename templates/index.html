@@ -7,9 +7,14 @@
 
 {% block content %} {#-- FOOTER S --#}
 
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
 
 <div class="container">
-
     <h1>Index</h1>
 
     {% if current_user.is_authenticated %}
