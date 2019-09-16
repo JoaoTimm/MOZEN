@@ -1,0 +1,74 @@
+{% extends "global_layouts/main_single.html" %}
+{% block head %} {#-- FOOTER S --#}
+<style>
+    body{
+    background-color: #02A58A;
+    }
+</style>
+{% endblock head %} {#-- FOOTER E --#}
+{% block content %} {#-- FOOTER S --#}
+<div class="container g_shadow rounded-lg forms_muse animation-target">
+
+    <form action="{{ url_for('auth.sign_in') }}" method="post">
+        {#### CSRF TOKEN S ####}
+        {{ form.csrf_token }}
+        {#### CSRF TOKEN S ####}
+
+        {#### EMAIL S ####}
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class_= "form-control form-control-lg", placeholder='your-email@email.com') }}
+           {# <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>#}
+            {% if form.email.errors %}
+            <div class="errors">
+                {% for error in form.email.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>!</strong> {{ error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {#### EMAIL E ####}
+        {#### password_hash S ####}
+        <div class="form-group">
+            {{ form.password_hash.label }}
+            {{ form.password_hash(class_= "form-control form-control-lg") }}
+            {% if form.password_hash.errors %}
+            <div class="errors">
+                {% for error in form.password_hash.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>!</strong> {{ error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {#### password_hash E ####}
+    <div class="form-group">
+        {{ form.submit(class_= "btn btn-primary btn-lg btn-block") }}
+    </div>
+    <div class="form-group">
+    {{ form.remember.label }}
+            {{ form.remember(class_= "form-check-label", checked="checked") }}
+
+    </div>
+
+    </form>
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endblock content %} {#-- FOOTER E --#}
+    {% block footer %} {#-- FOOTER S --#}
+    {% endblock footer %} {#-- FOOTER E --#}
+</div>
+
