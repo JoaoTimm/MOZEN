@@ -10,7 +10,8 @@
 
 <div class="container">
 
-{{ user.username }}
+<img class="avatar2" src="{{ url_for('static', filename = 'profile_pics/' + user.image_file) }}" alt="i.author.username">
+<h1>{{ user.username }}</h1>
 
 </div>
 

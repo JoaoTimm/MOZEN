@@ -6,9 +6,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from htmlmin.minify import html_minify
 
+from config import DevelopmentConfig, ProductionConfig
+
 app = Flask(__name__)
 
-app.config.from_pyfile('config.py')
+app.config.from_object(DevelopmentConfig())
+# app.config.from_object(ProductionConfig())
+
 
 app.config['SECRET_KEY'] = app.config['SECRET_KEY']
 
@@ -17,6 +21,7 @@ WTF_CSRF_SECRET_KEY = app.config['SECRET_KEY']
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 SQLALCHEMY_DATABASE_URI = app.config['SQLALCHEMY_DATABASE_URI']
+# app.config["SQLALCHEMY_ECHO"] = True
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -59,7 +64,7 @@ except ImportError as e:
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
         rendered_html = render_template('index.html', image_file=image_file)
         return html_minify(rendered_html)
     rendered_html = render_template('index.html')

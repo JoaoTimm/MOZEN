@@ -29,7 +29,9 @@
 
         </ul>
 
+    {% if current_user.is_authenticated %}
     <img class="rounded-circle account-img" src="{{ image_file }}" style="width: 45px" alt="">
+    {% else %}{% endif %}
 
         {#<span style="margin-left: 1%">{{ current_user.username }}</span>#}
 

@@ -50,7 +50,8 @@ def update_account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+        # Private image path
+    image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
     return render_template('account/account.html', title='Account',
                            image_file=image_file, form=form)
 
@@ -58,5 +59,6 @@ def update_account():
 @account.route("/profile/<user>", methods=['GET', 'POST'])
 def profile(user):
     user = User.query.filter_by(username=user).first_or_404()
-    # image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account/profile.html', title='Account', user=user)
+    # Public image path
+    image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + user.image_file)
+    return render_template('account/profile.html', title='Account', user=user, image_file=image_file)
