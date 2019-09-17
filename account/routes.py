@@ -3,13 +3,13 @@ import secrets
 
 from PIL import Image
 
-from flask import Blueprint, render_template, url_for, request, redirect, flash
+from flask import Blueprint, render_template, url_for, request, redirect, flash, session
 from flask_login import login_required, current_user
 from htmlmin.minify import html_minify
 
 from account.forms import UpdateAccountForm
 from app import db, app
-from models import User
+from models import User, Post
 
 account = Blueprint('account', __name__, template_folder='templates')
 
@@ -58,7 +58,10 @@ def update_account():
 
 @account.route("/profile/<user>", methods=['GET', 'POST'])
 def profile(user):
+    session['url'] = '/account/profile/' + user
+    # print(session['url'])
     user = User.query.filter_by(username=user).first_or_404()
     # Public image path
+    posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc())
     image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + user.image_file)
-    return render_template('account/profile.html', title='Account', user=user, image_file=image_file)
+    return render_template('account/profile.html', title='Account', user=user, image_file=image_file, posts=posts)

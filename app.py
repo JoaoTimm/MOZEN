@@ -1,4 +1,6 @@
-from flask import Flask, render_template, url_for
+import datetime
+
+from flask import Flask, render_template, url_for, request
 from flask_assets import Environment, Bundle
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
@@ -22,6 +24,10 @@ WTF_CSRF_SECRET_KEY = app.config['SECRET_KEY']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 SQLALCHEMY_DATABASE_URI = app.config['SQLALCHEMY_DATABASE_URI']
 # app.config["SQLALCHEMY_ECHO"] = True
+
+REMEMBER_COOKIE_DURATION = app.config['REMEMBER_COOKIE_DURATION']
+# PERMANENT_SESSION_LIFETIME = app.config['PERMANENT_SESSION_LIFETIME']
+app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=1 * 60)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

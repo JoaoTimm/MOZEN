@@ -1,11 +1,18 @@
 {% extends "global_layouts/main_single.html" %}
 {% block head %} {#-- FOOTER S --#}
+
+    <style>
+    body{
+    background-color: #F96067;
+    }
+</style>
+
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
-<div class="container">
+<div class="container" style="background-color: #F96067; border-width: 0">
     <div class="card-columns">
         {% for i in posts.items %}
-        <div class="card">
+        <div class="card animation-target">
 
         <a href="{{ url_for('blog.post', slug = i.slug ) }}">
 
