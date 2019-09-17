@@ -9,6 +9,7 @@ from htmlmin.minify import html_minify
 
 from account.forms import UpdateAccountForm
 from app import db, app
+from models import User
 
 account = Blueprint('account', __name__, template_folder='templates')
 
@@ -33,7 +34,7 @@ def save_picture(form_picture):
     return picture_fn
 
 
-@account.route("/profile", methods=['GET', 'POST'])
+@account.route("/update", methods=['GET', 'POST'])
 @login_required
 def update_account():
     form = UpdateAccountForm()
@@ -52,3 +53,10 @@ def update_account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account/account.html', title='Account',
                            image_file=image_file, form=form)
+
+
+@account.route("/profile/<user>", methods=['GET', 'POST'])
+def profile(user):
+    user = User.query.filter_by(username=user).first_or_404()
+    # image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('account/profile.html', title='Account', user=user)

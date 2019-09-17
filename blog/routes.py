@@ -18,8 +18,13 @@ def home():
 
 @blog.route('/all', methods=['GET', 'POST'])
 def all_posts():
+    session['url'] = url_for('blog.all_posts')
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=9)
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+        rendered_html = render_template('blog/all.html', posts=posts, image_file=image_file)
+        return html_minify(rendered_html)
     rendered_html = render_template('blog/all.html', posts=posts)
     return html_minify(rendered_html)
 
@@ -44,7 +49,8 @@ def new():
             return redirect(url_for('blog.all_posts'))
     else:
         return current_app.login_manager.unauthorized()
-    return render_template('blog/new.html', form=form, image_file=image_file)
+    rendered_html = render_template('blog/new.html', form=form, image_file=image_file)
+    return html_minify(rendered_html)
 
 
 @blog.route("/blog/<int:id>/delete", methods=['POST'])
