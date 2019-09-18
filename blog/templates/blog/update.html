@@ -1,0 +1,32 @@
+{% extends "global_layouts/main_single.html" %}
+
+{% block head %} {#-- FOOTER S --#}
+
+{% endblock head %} {#-- FOOTER E --#}
+
+
+{% block content %} {#-- FOOTER S --#}
+
+
+<div class="container">
+
+    <form action="{{ url_for('blog.update_post', id=id) }}" method="post">
+        {{ form.csrf_token }}
+        {{ form.title.label }}
+        {{ form.title(class_= "form-control form-control-lg") }}
+        {{ form.body.label }}
+        {{ form.body(class_= "form-control form-control-lg", cols="5", rows="10") }}
+
+                {{ form.tags.label }}
+        {{ form.tags(class_= "form-control form-control-lg") }}
+        <hr class="mb-4">
+        {{ form.submit(class_= "btn btn-lg btn-block") }}
+    </form>
+
+</div>
+
+
+{% endblock content %} {#-- FOOTER E --#}
+
+{% block footer %} {#-- FOOTER S --#}
+{% endblock footer %} {#-- FOOTER E --#}

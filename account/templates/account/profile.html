@@ -1,36 +1,47 @@
 {% extends "global_layouts/main_single.html" %}
-
 {% block head %} {#-- FOOTER S --#}
-<style>
-    body{
-    background-color: #F96067;
-    }
-</style>
+
 {% endblock head %} {#-- FOOTER E --#}
-
-
 {% block content %} {#-- FOOTER S --#}
-
-
 <div class="container container g_shadow rounded-lg forms_muse animation-target">
-
-<img class="avatar2" src="{{ url_for('static', filename = 'profile_pics/' + user.image_file) }}" alt="author.username">
-<h1>{{ user.username }}</h1>
-
+    <div class="bio">
+        <div class="flex">
+            <img class="avatar2" src="{{ url_for('static', filename = 'profile_pics/' + user.image_file) }}" alt="author.username">
+            <div>
+                <h1>{{ user.username }}</h1>
+            </div>
+        </div>
+    </div>
 </div>
-    {% for post in posts %}
+{% for post in posts %}
 <div class="container g_shadow rounded-lg forms_muse">
-        <a href="{{ url_for('blog.post', slug = post.slug ) }}">
-            <img class="rounded-top" src="{{ url_for('static', filename = '4o7931wx.jfif') }}"
-                style="width: 100%; display:block; margin:auto;" alt="post.author.username">
-            </a>
+    <a href="{{ url_for('blog.post', slug = post.slug ) }}">
+    <img class="rounded-top" src="{{ url_for('static', filename = '4o7931wx.jfif') }}"
+        style="width: 100%; display:block; margin:auto;" alt="post.author.username">
+    </a>
     <h1>{{ post.title }}</h1>
-  {#  <p>{{ post.body }}</p>#}
+    {#
+    <p>{{ post.body }}</p>
+    #}
+    {% if current_user.is_authenticated %}
+    {% if current_user == post.author %}
+    <ul class="nav">
+        <li class="nav-item nav_btn_space">
+            <a href="{{ url_for('blog.update_post', id=post.id) }}" class="btn btn btn-warning btn-sm" role="button">Update</a>
+        </li>
+        <li class="nav-item nav_btn_space">
+            <form action="{{ url_for('blog.delete_post', id=post.id) }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input class="btn btn-danger btn-sm" type="submit" value="Delete">
+            </form>
+        </li>
+    </ul>
+    {% endif %}
+    {% else %}
+    {% endif %}
 </div>
-    {% endfor %}
-
+{% endfor %}
 {% endblock content %} {#-- FOOTER E --#}
-
 {% block footer %} {#-- FOOTER S --#}
-       {{ super() }}
+{{ super() }}
 {% endblock footer %} {#-- FOOTER E --#}
