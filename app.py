@@ -1,13 +1,13 @@
 import datetime
 
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, session
 from flask_assets import Environment, Bundle
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from htmlmin.minify import html_minify
-
+from flask_gzip import Gzip
 from config import DevelopmentConfig, ProductionConfig
 
 app = Flask(__name__)
@@ -23,11 +23,12 @@ WTF_CSRF_SECRET_KEY = app.config['SECRET_KEY']
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 SQLALCHEMY_DATABASE_URI = app.config['SQLALCHEMY_DATABASE_URI']
-# app.config["SQLALCHEMY_ECHO"] = True
 
+
+app.config['PERMANENT_SESSION_LIFETIME'] = app.config['PERMANENT_SESSION_LIFETIME']
 REMEMBER_COOKIE_DURATION = app.config['REMEMBER_COOKIE_DURATION']
-# PERMANENT_SESSION_LIFETIME = app.config['PERMANENT_SESSION_LIFETIME']
-app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=1 * 60)
+
+
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -47,8 +48,10 @@ assets.register('styles_css', css)
 
 # ######## FLASK ASSETS E ##############
 
-# ######## BLUEPRINTS IMPORTS S ########
 
+gzip = Gzip(app)
+
+# ######## BLUEPRINTS IMPORTS S ########
 
 from account.routes import account
 from auth.routes import auth
@@ -65,6 +68,11 @@ try:
     print('Models imported')
 except ImportError as e:
     print(e)
+
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
 
 
 @app.route('/')

@@ -63,5 +63,8 @@ def profile(user):
     user = User.query.filter_by(username=user).first_or_404()
     # Public image path
     posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc())
-    image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + user.image_file)
-    return render_template('account/profile.html', title='Account', user=user, image_file=image_file, posts=posts)
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
+        return render_template('account/profile.html', title='Account', user=user, image_file=image_file,
+                               posts=posts)
+    return render_template('account/profile.html', title='Account', user=user, posts=posts)

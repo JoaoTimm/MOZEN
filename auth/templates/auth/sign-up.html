@@ -7,29 +7,13 @@
 </style>
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
+    <div id="particles-js"></div>
 <div class="container g_shadow rounded-lg forms_muse animation-target">
     <form action="{{ url_for('auth.sign_up') }}" method="post">
         {#### CSRF TOKEN S ####}
         {{ form.csrf_token }}
         {#### CSRF TOKEN S ####}
-        {#### CSRF USERNAME S ####}
-        <div class="form-group">
-            {{ form.username.label }}
-            {{ form.username(class_= "form-control form-control-lg", placeholder='Joe Blah') }}
-            {% if form.username.errors %}
-            <div class="errors">
-                {% for error in form.username.errors %}
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>!</strong> {{ error }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-        </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-        {#### USERNAME E ####}
+
         {#### EMAIL S ####}
         <div class="form-group">
             {{ form.email.label }}
@@ -49,6 +33,26 @@
             {% endif %}
         </div>
         {#### EMAIL E ####}
+
+    {#### USERNAME S ####}
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class_= "form-control form-control-lg", placeholder='Joe Blah') }}
+            {% if form.username.errors %}
+            <div class="errors">
+                {% for error in form.username.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>!</strong> {{ error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+        </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {#### USERNAME E ####}
+
         {#### password_hash S ####}
         <div class="form-group">
             {{ form.password_hash.label }}
@@ -94,7 +98,11 @@
         {{ message }}
     </div>
     {% endfor %}
+    </div>
     {% endblock content %} {#-- FOOTER E --#}
     {% block footer %} {#-- FOOTER S --#}
+                    {{ super() }}
+        <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="{{ url_for('static', filename='js/particles.js') }}"></script>
     {% endblock footer %} {#-- FOOTER E --#}
-</div>
+

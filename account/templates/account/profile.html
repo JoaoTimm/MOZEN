@@ -25,11 +25,12 @@
                 style="width: 100%; display:block; margin:auto;" alt="post.author.username">
             </a>
     <h1>{{ post.title }}</h1>
-    <p>{{ post.body }}</p>
+  {#  <p>{{ post.body }}</p>#}
 </div>
     {% endfor %}
 
 {% endblock content %} {#-- FOOTER E --#}
 
 {% block footer %} {#-- FOOTER S --#}
+       {{ super() }}
 {% endblock footer %} {#-- FOOTER E --#}
