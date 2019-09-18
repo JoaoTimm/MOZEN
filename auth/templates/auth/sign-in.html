@@ -7,7 +7,6 @@
 </style>
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
-    <div id="particles-js"></div>
 <div class="container g_shadow rounded-lg forms_muse animation-target">
 
     <form action="{{ url_for('auth.sign_in') }}" method="post">
@@ -70,9 +69,9 @@
 </div>
     {% endblock content %} {#-- FOOTER E --#}
     {% block footer %} {#-- FOOTER S --#}
+
             {{ super() }}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
-<script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+
     {% endblock footer %} {#-- FOOTER E --#}
 
 
