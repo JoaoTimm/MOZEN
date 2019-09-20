@@ -3,18 +3,18 @@
 
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
-<div class="container container g_shadow rounded-lg forms_muse animation-target">
+<div class="container container g_shadow rounded-lg forms_muse animation-target readable">
     <div class="bio">
         <div class="flex">
             <img class="avatar2" src="{{ url_for('static', filename = 'profile_pics/' + user.image_file) }}" alt="author.username">
             <div>
-                <h1>{{ user.username }}</h1>
+                <h4>{{ user.username }}</h4>
             </div>
         </div>
     </div>
 </div>
 {% for post in posts %}
-<div class="container g_shadow rounded-lg forms_muse">
+<div class="container g_shadow rounded-lg forms_muse readable">
     <a href="{{ url_for('blog.post', slug = post.slug ) }}">
     <img class="rounded-top" src="{{ url_for('static', filename = '4o7931wx.jfif') }}"
         style="width: 100%; display:block; margin:auto;" alt="post.author.username">

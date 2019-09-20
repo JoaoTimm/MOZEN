@@ -2,6 +2,7 @@ import datetime
 
 from flask import Flask, render_template, url_for, request, session
 from flask_assets import Environment, Bundle
+from flask_ckeditor import CKEditor
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -34,11 +35,16 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.sign_in'
 
+app.config['CKEDITOR_PKG_TYPE'] = 'standard'  # CKEditor provide three type of presets (i.e. basic, standard and full)
+ckeditor = CKEditor(app)
+app.config['CKEDITOR_ENABLE_CSRF'] = True
+
 # ######## FLASK ASSETS S ##############
 assets = Environment(app)
 
 css = Bundle('css/styles.css',
              'css/override_bootstrap.css',
+             'css/ir_black.css',
              filters="cssmin",
              output='gen/styles.css')
 assets.register('styles_css', css)

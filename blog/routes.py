@@ -1,5 +1,7 @@
+import string
+
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
-from flask_login import current_user
+from flask_login import current_user, login_required
 from htmlmin.minify import html_minify
 from slugify import slugify
 
@@ -40,10 +42,12 @@ def new():
     if current_user.is_authenticated:
         image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
         if request.method == 'POST':
+            content = request.form['body'].replace("<script>", "<'script'>").replace("</script>", "</'script'>")
             add_new_post = Post(
                 title=request.form['title'],
                 slug=slugify(request.form['title']),
-                body=request.form['body'],
+                body=content,
+                # body=string.replace("geeks", "Geeks"),
                 tags=request.form['tags'],
                 author=current_user
             )
@@ -70,7 +74,9 @@ def update_post(id):
             if form.validate_on_submit():
                 post.title = form.title.data
                 post.slug = slugify(form.title.data)
-                post.body = form.body.data
+                post.body = form.body.data.replace("<script>", "<strong class="'warning'">"
+                                                               "<'Scripts tags on source Code are not allowed, "
+                                                               "please use the Insert Code Snipped instead'></strong>")
                 post.tags = form.tags.data
                 db.session.commit()
                 return redirect(url_for('blog.post',
@@ -90,6 +96,7 @@ def update_post(id):
 
 
 @blog.route("/blog/<int:id>/delete", methods=['POST'])
+@login_required
 def delete_post(id):
     post = Post.query.get(id)
     db.session.delete(post)

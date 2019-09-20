@@ -1,15 +1,14 @@
 {% extends "global_layouts/main_single.html" %}
 {% block head %} {#-- FOOTER S --#}
+{#<style>
+body{
+    background-color: #02A58A;
+}
 
-    <style>
-    body{
-    background-color: #E9EBEE;
-    }
-</style>
-
+</style>#}
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
-<div class="container" style="background-color: #E9EBEE; border-width: 0">
+<div class="container" {#style="background-color: #02A58A; border-width: 0"#}>
     <div class="card-columns">
         {% for i in posts.items %}
         <div class="card animation-target">
@@ -29,8 +28,8 @@
             <h5 class="card-title">{{ i.title }}</h5>
 
             </a>
-
-                <div class="bio">
+</div>
+                <div class="bio" style="background-color: white; padding: 2%">
                     <div class="flex">
      <img class="avatar" src="{{ url_for('static', filename = 'profile_pics/' + i.author.image_file) }}" alt="i.author.username">
                       <div>
@@ -42,7 +41,7 @@
                     </div>
                   </div>
 
-            </div>
+
         </div>
         {% endfor %}
     </div>

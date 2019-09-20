@@ -1,11 +1,7 @@
 {% extends "global_layouts/main_single.html" %}
 
 {% block head %} {#-- FOOTER S --#}
-<style>
-    body{
-    background-color: #02A58A;
-    }
-</style>
+
 {% endblock head %} {#-- FOOTER E --#}
 
 
@@ -18,14 +14,14 @@
     </div>
     {% endfor %}
 </div>
-<div class="container g_shadow rounded-lg animation-target">
+<div class="container g_shadow rounded-lg animation-target readable">
 
         <form action="{{ url_for('blog.new') }}" method="post">
         {{ form.csrf_token }}
         {{ form.title.label }}
         {{ form.title(class_= "form-control form-control-lg") }}
         {{ form.body.label }}
-        {{ form.body(class_= "form-control form-control-lg", cols="5", rows="10") }}
+        {{ form.body(class_= "form-control form-control-lg", cols="5", rows="5") |safe }}
         {{ form.tags.label }}
         {{ form.tags(class_= "form-control form-control-lg") }}
         <hr class="mb-4">
@@ -38,4 +34,9 @@
 {% endblock content %} {#-- FOOTER E --#}
 
 {% block footer %} {#-- FOOTER S --#}
+    {{ super() }}
+{#     {{ ckeditor.load() }}#}
+    <script src="{{ url_for('static', filename = 'ckeditor/ckeditor.js')}}"></script>
+ {{ ckeditor.config(name='body') }}
+
 {% endblock footer %} {#-- FOOTER E --#}

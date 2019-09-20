@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-light" style="">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="">
     <a class="navbar-brand" href="{{ url_for('index') }}">
     <img rel="prefetch" class="" src="{{ url_for('static', filename='img/svg/moz_logo.svg') }}"
         alt="triangle with all three sides equal" height="" width="80px"/>
@@ -22,8 +22,12 @@
                 <span class="nav-link dropdown-toggle" data-toggle="dropdown">Blog
                 <span class="caret"></span></span>
                 <ul class="dropdown-menu">
+                    <li class="nav-item">
                     <a class="nav-link {{ 'active' if active_page == 'blog' else '' }}" href="{{ url_for('blog.all_posts')}}">All Posts</a>
+                    </li>
+                    <li class="nav-item">
                     <a class="nav-link {{ 'active' if active_page == 'new_post' else '' }}" href="{{ url_for('blog.new')}}">New Post</a>
+                    </li>
                 </ul>
             </div>
 

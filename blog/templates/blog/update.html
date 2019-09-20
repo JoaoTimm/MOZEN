@@ -15,7 +15,7 @@
         {{ form.title.label }}
         {{ form.title(class_= "form-control form-control-lg") }}
         {{ form.body.label }}
-        {{ form.body(class_= "form-control form-control-lg", cols="5", rows="10") }}
+        {{ form.body (class_= "form-control form-control-lg", cols="5", rows="10") }}
 
                 {{ form.tags.label }}
         {{ form.tags(class_= "form-control form-control-lg") }}
@@ -29,4 +29,10 @@
 {% endblock content %} {#-- FOOTER E --#}
 
 {% block footer %} {#-- FOOTER S --#}
+
+        {{ super() }}
+    <script src="{{ url_for('static', filename = 'ckeditor/ckeditor.js')}}"></script>
+     {#{{ ckeditor.load() }}#}
+ {{ ckeditor.config(name='body') }}
+
 {% endblock footer %} {#-- FOOTER E --#}
