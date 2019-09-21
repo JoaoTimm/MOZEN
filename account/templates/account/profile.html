@@ -14,7 +14,7 @@
     </div>
 </div>
 {% for post in posts %}
-<div class="container g_shadow rounded-lg forms_muse readable">
+<div class="container g_shadow rounded-lg forms_muse" style="background-color: white">
     <a href="{{ url_for('blog.post', slug = post.slug ) }}">
     <img class="rounded-top" src="{{ url_for('static', filename = '4o7931wx.jfif') }}"
         style="width: 100%; display:block; margin:auto;" alt="post.author.username">

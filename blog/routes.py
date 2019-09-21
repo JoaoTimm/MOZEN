@@ -1,5 +1,3 @@
-import string
-
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 from flask_login import current_user, login_required
 from htmlmin.minify import html_minify
@@ -7,7 +5,7 @@ from slugify import slugify
 
 from app import db, app
 from blog.blog_forms import PostForm
-from models import Post
+from models import Post, User
 
 blog = Blueprint('blog', __name__, template_folder='templates')
 
@@ -119,3 +117,14 @@ def post(slug):
                                         title_post=title_post,
                                         title=title_post.title)
         return html_minify(rendered_html)
+
+
+@blog.route('/s', methods=['GET', 'POST'])
+def s():
+    posts = Post.query.whoosh_search('Vasco Flask').all()
+    ''''
+    print(posts)
+    for i in posts:
+        print(i.id)
+    '''
+    return render_template('blog/search_results.html', posts=posts)

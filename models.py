@@ -5,12 +5,15 @@ from flask_login import UserMixin
 from app import db, login_manager
 
 
+
+
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
 
 class User(UserMixin, db.Model):
+    __searchable__ = ['username']
     id: int = db.Column(db.Integer, primary_key=True)
     username: str = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -20,6 +23,7 @@ class User(UserMixin, db.Model):
 
 
 class Post(db.Model):
+    __searchable__ = ['body', 'title', 'tags']
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     slug = db.Column(db.String())

@@ -9,9 +9,11 @@ body{
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
 <div class="container" {#style="background-color: #02A58A; border-width: 0"#}>
+
     <div class="card-columns">
         {% for i in posts.items %}
-        <div class="card animation-target">
+
+        <div class="card animation-target g_shadow">
 
         <a href="{{ url_for('blog.post', slug = i.slug ) }}">
 
@@ -20,7 +22,7 @@ body{
 
             </a>
 
-            <div class="card-body rounded-lg">
+            <div class="card-body">
 
 
                 <a href="{{ url_for('blog.post', slug = i.slug ) }}">
@@ -43,7 +45,9 @@ body{
 
 
         </div>
+
         {% endfor %}
+
     </div>
     <div style="padding-bottom: 10%"></div>
     {#######################################################}
