@@ -48,7 +48,9 @@
                 <li class="nav-item dropdown">
                 {% if current_user.is_authenticated %}
 <li class="nav-item">
+ <a class="btn btn-primary btn-sm" style="" href="{{ url_for('blog.new')}}">new article</a>
 <a class="" href="{{ url_for('account.profile', user = current_user.username )}}">
+
     <img class="avatar" src="{{ image_file }}" alt="">
 </a>
 </li>
