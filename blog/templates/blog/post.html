@@ -14,9 +14,10 @@
 <div id="image_post" class="container cont_extra rounded-lg g_shadow readable" style="padding: 3%;">
     {#<img class="" style="width: 100%" src="{{ post_image_file }}">#}
     <h1>{{ title_post.title }}</h1>
-        <img class="g_shadow rounded-lg image_top_bottom_spaced" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + title_post.post_image_file) }}" alt="">
+        <img class="g_shadow rounded-lg image_top_bottom_spaced" style="width: 100%;" src="{{ url_for('static', filename = 'post_pics/' + title_post.post_image_file) }}" alt="">
+<hr class="mb-4">
     {{ title_post.body|safe }}
-
+<hr class="mb-4">
 
 
     {% if current_user.is_authenticated %}
