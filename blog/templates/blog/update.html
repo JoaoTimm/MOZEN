@@ -8,17 +8,17 @@
 {% block content %} {#-- FOOTER S --#}
 
 
-<div class="container">
+<div class="container readable">
 
     <form action="{{ url_for('blog.update_post', id=id) }}" method="post" enctype="multipart/form-data">
         {{ form.csrf_token }}
         {{ form.title.label }}
         {{ form.title(class_= "form-control form-control-lg") }}
 
-    <img class="g_shadow rounded-lg" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + post_image_file) }}" alt="hot head picture yellow ">
+    <img class="g_shadow rounded-lg image_top_bottom_spaced" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + post_image_file) }}" alt="hot head picture yellow ">
 
         <div class="form-group">
-                    {{ form.post_image_file.label() }}
+                    {#{{ form.post_image_file.label() }}#}
                     {{ form.post_image_file(class="form-control-file") }}
                     {% if form.post_image_file.errors %}
                         {% for error in form.post_image_file.errors %}
@@ -33,7 +33,7 @@
                 {{ form.tags.label }}
         {{ form.tags(class_= "form-control form-control-lg") }}
         <hr class="mb-4">
-        {{ form.submit(class_= "btn btn-lg btn-block") }}
+        {{ form.submit(class_= "btn btn-primary btn-lg btn-block") }}
     </form>
 
 </div>

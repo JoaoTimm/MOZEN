@@ -86,14 +86,16 @@ def new():
 def update_post(id):
     post = Post.query.get(id)
     form = PostForm()
-    post_image_file = post.post_image_file
     session['url'] = url_for('blog.update_post', id=id)
     if current_user.is_authenticated:
         if post.author == current_user:
             image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
             if form.validate_on_submit():
+                if form.post_image_file.data:
+                    post_image_file = save_picture(form.post_image_file.data)
+                    post.post_image_file = post_image_file
+
                 post.title = form.title.data
-                post.post_image_file = save_picture(form.post_image_file.data)
                 post.slug = slugify(form.title.data)
                 post.body = form.body.data.replace("<script>", "<strong class="'warning'">"
                                                                "<'Scripts tags on source Code are not allowed, "
@@ -103,6 +105,7 @@ def update_post(id):
                 return redirect(url_for('blog.post',
                                         slug=post.slug))
             elif request.method == 'GET':
+                post_image_file = post.post_image_file
                 form.title.data = post.title
                 form.body.data = post.body
                 form.tags.data = post.tags
@@ -137,7 +140,7 @@ def post(slug):
         rendered_html = render_template('blog/post.html',
                                         title_post=title_post,
                                         title=title_post.title,
-                                        image_file=image_file, # Pass image for profile
+                                        image_file=image_file,  # Pass image for profile
                                         post_image_file=title_post.post_image_file)
         return html_minify(rendered_html)
     else:
