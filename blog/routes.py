@@ -154,10 +154,32 @@ def post(slug):
 
 @blog.route('/s', methods=['GET', 'POST'])
 def s():
-    posts = Post.query.whoosh_search('Vasco Flask').all()
+    posts = Post.query.whoosh_search('Flask').all()
     ''''
     print(posts)
     for i in posts:
         print(i.id)
     '''
     return render_template('blog/search_results.html', posts=posts)
+
+
+@blog.route('/search', methods=['GET', 'POST'])
+def search():
+    session['url'] = url_for('blog.all_posts')
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.whoosh_search('Python').order_by(Post.date_posted.desc()).paginate(page=page,
+                                                                                         per_page=9)
+    '''
+    posts = Post.query.whoosh_search('Flask').order_by(Post.date_posted.desc()).paginate(page=page,
+                                                                per_page=9)
+    posts = Post.query.whoosh_search('Flask').all()
+    '''
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
+        rendered_html = render_template('blog/all.html',
+                                        posts=posts,
+                                        image_file=image_file)
+        return html_minify(rendered_html)
+    rendered_html = render_template('blog/all.html',
+                                    posts=posts)
+    return html_minify(rendered_html)

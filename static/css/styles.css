@@ -1,12 +1,13 @@
 body {
     background-image: url("/static/img/svg/bg_test_7.svg");
     background-repeat: no-repeat;
-    /*background-size: 100% 700px;*/
-    display: block;
+    background-size: 100% 600px;
+    /*display: block;*/
     position: relative;
     background-position: top;
     background-color: #252525;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Ubuntu', sans-serif;
+/*    background-size: 100% 100%;*/
 }
 
 html {
@@ -62,7 +63,7 @@ img:hover {
 }
 
 h1 {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Ubuntu', sans-serif;
     font-weight: 700;
 }
 
@@ -90,7 +91,7 @@ code {
 }
 
 footer {
-    background-color: #252525;
+    /*background-color: #252525;*/
 }
 
 footer a {
