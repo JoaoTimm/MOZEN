@@ -3,12 +3,31 @@
 
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
-<div class="container container g_shadow rounded-lg forms_muse animation-target readable">
+<div class="container container g_shadow rounded-lg forms_muse animation-target" style="background-color: white">
     <div class="bio">
         <div class="flex">
             <img class="avatar2" src="{{ url_for('static', filename = 'profile_pics/' + user.image_file) }}" alt="author.username">
             <div>
-                <h4>{{ user.username }}</h4>
+                <ul class="list-group list-group-flush">
+
+                    {# --- USERNAME  S--- #}
+                    <li class="list-group-item">
+                        {{ user.username }}
+                    </li>
+                    {# --- USERNAME  E--- #}
+
+                    {# --- GITHUB USERNAME  S--- #}
+                     <li class="list-group-item">
+
+            <img class="" src="{{ url_for('static', filename='img/svg/github_logo.svg') }}"
+            alt="triangle with all three sides equal" height="20px" width=""/>
+
+                        {{ user.git_username }}
+
+                    </li>
+                    {# --- GITHUB USERNAME  E--- #}
+                </ul>
+
             </div>
         </div>
     </div>

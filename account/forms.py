@@ -7,10 +7,14 @@ from wtforms.validators import DataRequired, Email, Length
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
+
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     image_file = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
+
+    git_username = StringField('GitHub Username',
+                               validators=[DataRequired(), Length(min=2, max=20)])
 
 
 '''

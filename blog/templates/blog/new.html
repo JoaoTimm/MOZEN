@@ -16,10 +16,23 @@
 </div>
 <div class="container g_shadow rounded-lg animation-target readable">
 
-        <form action="{{ url_for('blog.new') }}" method="post">
+        <form action="{{ url_for('blog.new') }}" method="post" enctype="multipart/form-data">
         {{ form.csrf_token }}
         {{ form.title.label }}
         {{ form.title(class_= "form-control form-control-lg") }}
+
+
+            <div class="form-group">
+                    {{ form.post_image_file.label() }}
+                    {{ form.post_image_file(class="form-control-file") }}
+                    {% if form.post_image_file.errors %}
+                        {% for error in form.post_image_file.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+
         {{ form.body.label }}
         {{ form.body(class_= "form-control form-control-lg", cols="5", rows="5") |safe }}
         {{ form.tags.label }}

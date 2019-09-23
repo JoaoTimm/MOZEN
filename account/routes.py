@@ -44,12 +44,14 @@ def update_account():
             current_user.image_file = image_file
         current_user.username = form.username.data
         current_user.email = form.email.data
+        current_user.git_username = form.git_username.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account.update_account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
+        form.git_username.data = current_user.git_username
         # Private image path
     image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
     return render_template('account/account.html', title='Account',

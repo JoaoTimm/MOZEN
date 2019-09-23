@@ -11,8 +11,10 @@
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
 {#<div class="container rounded-lg">#}
-<div class="container cont_extra rounded-lg g_shadow readable" style="padding: 3%;">
+<div id="image_post" class="container cont_extra rounded-lg g_shadow readable" style="padding: 3%;">
+    {#<img class="" style="width: 100%" src="{{ post_image_file }}">#}
     <h1>{{ title_post.title }}</h1>
+        <img class="g_shadow rounded-lg" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + title_post.post_image_file) }}" alt="">
     {{ title_post.body|safe }}
 </div>
 {#</div>#}
