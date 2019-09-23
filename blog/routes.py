@@ -25,7 +25,7 @@ def all_posts():
     session['url'] = url_for('blog.all_posts')
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page,
-                                                                  per_page=9)
+                                                                  per_page=8)
     if current_user.is_authenticated:
         image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
         rendered_html = render_template('blog/all.html',
@@ -168,7 +168,7 @@ def search():
     session['url'] = url_for('blog.all_posts')
     page = request.args.get('page', 1, type=int)
     posts = Post.query.whoosh_search('Python').order_by(Post.date_posted.desc()).paginate(page=page,
-                                                                                         per_page=9)
+                                                                                         per_page=8)
     '''
     posts = Post.query.whoosh_search('Flask').order_by(Post.date_posted.desc()).paginate(page=page,
                                                                 per_page=9)

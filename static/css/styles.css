@@ -67,6 +67,12 @@ h1 {
     font-weight: 700;
 }
 
+h5 {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+}
+
+
 .card-body a {
     color: black;
 }

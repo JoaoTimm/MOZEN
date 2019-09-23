@@ -10,8 +10,6 @@ import flask_whooshalchemy as wa  # pip3 install git+git://github.com/gyllstromk
 from flask_gzip import Gzip
 from config import DevelopmentConfig, ProductionConfig
 
-
-
 app = Flask(__name__)
 
 app.config.from_object(DevelopmentConfig())
@@ -70,10 +68,10 @@ try:
 except ImportError as e:
     print(e)
 
-
 app.config['WHOOSH_BASE'] = app.config['WHOOSH_BASE']
 wa.whoosh_index(app, User)
 wa.whoosh_index(app, Post)
+
 
 # ######## BLUEPRINTS IMPORTS E #########
 
