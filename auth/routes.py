@@ -25,7 +25,7 @@ def sign_up():
             password_hash=generate_password_hash(request.form['password_hash']))
         db.session.add(new_user)
         db.session.commit()
-        flash('You Sing Up successfully.')
+        flash('You Sign Up successfully.')
         return redirect(url_for('auth.home'))
     return render_template('auth/sign-up.html', form=form)
 

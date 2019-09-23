@@ -17,8 +17,10 @@ body{
 
         <a href="{{ url_for('blog.post', slug = i.slug ) }}">
 
-            <img class="rounded-top" src="{{ url_for('static', filename = '4o7931wx.jfif') }}"
-                style="width: 100%; display:block; margin:auto;" alt="i.author.username">
+            <img class="" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + i.post_image_file) }}" alt="">
+
+            {#<img class="rounded-top" src="{{ url_for('static', filename = '4o7931wx.jfif') }}"
+                style="width: 100%; display:block; margin:auto;" alt="i.author.username">#}
 
             </a>
 
