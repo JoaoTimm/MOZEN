@@ -1,51 +1,34 @@
 {% extends "global_layouts/main_single.html" %}
-
 {% block head %} {#-- FOOTER S --#}
-
 {% endblock head %} {#-- FOOTER E --#}
-
-
 {% block content %} {#-- FOOTER S --#}
-
-
 <div class="container readable">
-
     <form action="{{ url_for('blog.update_post', id=id) }}" method="post" enctype="multipart/form-data">
         {{ form.csrf_token }}
         {{ form.title.label }}
         {{ form.title(class_= "form-control form-control-lg") }}
-
-    <img class="g_shadow rounded-lg image_top_bottom_spaced" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + post_image_file) }}" alt="hot head picture yellow ">
-
+        <img class="g_shadow rounded-lg image_top_bottom_spaced" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + post_image_file) }}" alt="hot head picture yellow ">
         <div class="form-group">
-                    {#{{ form.post_image_file.label() }}#}
-                    {{ form.post_image_file(class="form-control-file") }}
-                    {% if form.post_image_file.errors %}
-                        {% for error in form.post_image_file.errors %}
-                            <span class="text-danger">{{ error }}</span></br>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
+            {#{{ form.post_image_file.label() }}#}
+            {{ form.post_image_file(class="form-control-file") }}
+            {% if form.post_image_file.errors %}
+            {% for error in form.post_image_file.errors %}
+            <span class="text-danger">{{ error }}</span></br>
+            {% endfor %}
+            {% endif %}
+        </div>
         {{ form.body.label }}
         {{ form.body (class_= "form-control form-control-lg", cols="5", rows="10") }}
-
-                {{ form.tags.label }}
+        {{ form.tags.label }}
         {{ form.tags(class_= "form-control form-control-lg") }}
         <hr class="mb-4">
         {{ form.submit(class_= "btn btn-primary btn-lg btn-block") }}
     </form>
-
 </div>
-
-
 {% endblock content %} {#-- FOOTER E --#}
-
 {% block footer %} {#-- FOOTER S --#}
-
-        {{ super() }}
-    <script src="{{ url_for('static', filename = 'ckeditor/ckeditor.js')}}"></script>
-     {#{{ ckeditor.load() }}#}
- {{ ckeditor.config(name='body') }}
-
+{{ super() }}
+<script src="{{ url_for('static', filename = 'ckeditor/ckeditor.js')}}"></script>
+{#{{ ckeditor.load() }}#}
+{{ ckeditor.config(name='body') }}
 {% endblock footer %} {#-- FOOTER E --#}

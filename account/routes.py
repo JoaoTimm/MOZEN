@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from htmlmin.minify import html_minify
 
 from account.forms import UpdateAccountForm
-from app import db, app
+from app import db, app, current_user_image_file
 from models import User, Post
 
 account = Blueprint('account', __name__, template_folder='templates')
@@ -53,9 +53,10 @@ def update_account():
         form.email.data = current_user.email
         form.git_username.data = current_user.git_username
         # Private image path
-    image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
-    return render_template('account/account.html', title='Account',
-                           image_file=image_file, form=form)
+    return render_template('account/account.html',
+                           title='Account',
+                           image_file=current_user_image_file(),
+                           form=form)
 
 
 @account.route("/profile/<user>", methods=['GET', 'POST'])
@@ -66,7 +67,12 @@ def profile(user):
     # Public image path
     posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc())
     if current_user.is_authenticated:
-        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
-        return render_template('account/profile.html', title='Account', user=user, image_file=image_file,
+        return render_template('account/profile.html',
+                               title='Account',
+                               user=user,
+                               image_file=current_user_image_file(),
                                posts=posts)
-    return render_template('account/profile.html', title='Account', user=user, posts=posts)
+    return render_template('account/profile.html',
+                           title='Account',
+                           user=user,
+                           posts=posts)

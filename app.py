@@ -53,8 +53,14 @@ assets.register('styles_css', css)
 
 gzip = Gzip(app)
 
-# ######## BLUEPRINTS IMPORTS S ########
 
+def current_user_image_file():
+    if current_user.is_authenticated:
+        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
+        return image_file
+
+
+# ######## BLUEPRINTS IMPORTS S ########
 from account.routes import account
 from auth.routes import auth
 from blog.routes import blog
@@ -84,8 +90,7 @@ def make_session_permanent():
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
-        rendered_html = render_template('index.html', image_file=image_file)
+        rendered_html = render_template('index.html', image_file=current_user_image_file())
         return html_minify(rendered_html)
     rendered_html = render_template('index.html')
     return html_minify(rendered_html)

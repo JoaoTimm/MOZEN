@@ -7,11 +7,13 @@ from flask_login import current_user, login_required
 from htmlmin.minify import html_minify
 from slugify import slugify
 
-from app import db, app
+from app import db, app, current_user_image_file
 from blog.blog_forms import PostForm
 from models import Post
 
 blog = Blueprint('blog', __name__, template_folder='templates')
+
+posts_per_page = 20
 
 
 @blog.route('/')
@@ -25,12 +27,11 @@ def all_posts():
     session['url'] = url_for('blog.all_posts')
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page,
-                                                                  per_page=20)
+                                                                  per_page=posts_per_page)
     if current_user.is_authenticated:
-        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
         rendered_html = render_template('blog/all.html',
                                         posts=posts,
-                                        image_file=image_file)
+                                        image_file=current_user_image_file())
         return html_minify(rendered_html)
     rendered_html = render_template('blog/all.html',
                                     posts=posts)
@@ -56,7 +57,6 @@ def new():
     form = PostForm()
     session['url'] = url_for('blog.new')
     if current_user.is_authenticated:
-        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
         if request.method == 'POST':
             content = request.form['body'].replace("<script>", "<strong class="'warning'">"
                                                                "<'Scripts tags on source Code are not allowed, "
@@ -78,7 +78,7 @@ def new():
         return current_app.login_manager.unauthorized()
     rendered_html = render_template('blog/new.html',
                                     form=form,
-                                    image_file=image_file)
+                                    image_file=current_user_image_file())
     return html_minify(rendered_html)
 
 
@@ -89,7 +89,6 @@ def update_post(id):
     session['url'] = url_for('blog.update_post', id=id)
     if current_user.is_authenticated:
         if post.author == current_user:
-            image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
             if form.validate_on_submit():
                 if form.post_image_file.data:
                     post_image_file = save_picture(form.post_image_file.data)
@@ -97,8 +96,8 @@ def update_post(id):
 
                 post.title = form.title.data
                 post.slug = slugify(form.title.data)
-                post.body = form.body.data.replace("<script>", "<strong class="'warning'">"
-                                                               "<'Scripts tags on source Code are not allowed, "
+                post.body = form.body.data.replace("<script>", "<strong class="'warning'"> <'Scripts tags on source "
+                                                               "Code are not allowed, "
                                                                "please use the Insert Code Snipped instead'></strong>")
                 post.tags = form.tags.data
                 db.session.commit()
@@ -115,7 +114,7 @@ def update_post(id):
     rendered_html = render_template('blog/update.html',
                                     title='Update Post',
                                     form=form,
-                                    image_file=image_file,
+                                    image_file=current_user_image_file(),
                                     post_image_file=post_image_file,
                                     id=id)
     return html_minify(rendered_html)
@@ -135,12 +134,11 @@ def post(slug):
     title_post = Post.query.filter_by(slug=slug).first_or_404()
     # post_image_file = url_for('static', filename=app.config['POST_PICTURE_PATH'] + title_post.post_image_file)
     if current_user.is_authenticated:
-        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
         print(title_post.post_image_file)
         rendered_html = render_template('blog/post.html',
                                         title_post=title_post,
                                         title=title_post.title,
-                                        image_file=image_file,  # Pass image for profile
+                                        image_file=current_user_image_file(),  # Pass image for profile
                                         post_image_file=title_post.post_image_file)
         return html_minify(rendered_html)
     else:
@@ -168,17 +166,11 @@ def search():
     session['url'] = url_for('blog.all_posts')
     page = request.args.get('page', 1, type=int)
     posts = Post.query.whoosh_search('Python').order_by(Post.date_posted.desc()).paginate(page=page,
-                                                                                         per_page=8)
-    '''
-    posts = Post.query.whoosh_search('Flask').order_by(Post.date_posted.desc()).paginate(page=page,
-                                                                per_page=9)
-    posts = Post.query.whoosh_search('Flask').all()
-    '''
+                                                                                          per_page=8)
     if current_user.is_authenticated:
-        image_file = url_for('static', filename=app.config['PROFILE_PICTURE_PATH'] + current_user.image_file)
         rendered_html = render_template('blog/all.html',
                                         posts=posts,
-                                        image_file=image_file)
+                                        image_file=current_user_image_file())
         return html_minify(rendered_html)
     rendered_html = render_template('blog/all.html',
                                     posts=posts)

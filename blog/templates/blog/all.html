@@ -1,55 +1,30 @@
 {% extends "global_layouts/main_single.html" %}
 {% block head %} {#-- FOOTER S --#}
-{#<style>
-body{
-    background-color: #02A58A;
-}
-
-</style>#}
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
 <div class="container-fluid" style="margin-top: 5%; margin-bottom: 5%;">
-
     <div class="card-columns">
         {% for i in posts.items %}
-
         <div class="card animation-target g_shadow">
-
-        <a href="{{ url_for('blog.post', slug = i.slug ) }}">
-
+            <a href="{{ url_for('blog.post', slug = i.slug ) }}">
             <img class="{#grey_img#}" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + i.post_image_file) }}" alt="">
-
-            {#<img class="rounded-top" src="{{ url_for('static', filename = '4o7931wx.jfif') }}"
-                style="width: 100%; display:block; margin:auto;" alt="i.author.username">#}
-
             </a>
-
             <div class="card-body">
-
-
                 <a href="{{ url_for('blog.post', slug = i.slug ) }}">
-
-            <h5 class="card-title">{{ i.title }}</h5>
-
-            </a>
-</div>
-                <div class="bio" style="background-color: white; padding: 2%">
-                    <div class="flex">
-     <img class="avatar" src="{{ url_for('static', filename = 'profile_pics/' + i.author.image_file) }}" alt="i.author.username">
-                      <div>
-
-                          <a class="name" href="{{ url_for('account.profile', user= i.author.username )}}">{{ i.author.username }}</a>
-
+                    <h5 class="card-title">{{ i.title }}</h5>
+                </a>
+            </div>
+            <div class="bio" style="background-color: white; padding: 2%">
+                <div class="flex">
+                    <img class="avatar" src="{{ url_for('static', filename = 'profile_pics/' + i.author.image_file) }}" alt="i.author.username">
+                    <div>
+                        <a class="name" href="{{ url_for('account.profile', user= i.author.username )}}">{{ i.author.username }}</a>
                         <div class="published">September 15</div>
-                      </div>
                     </div>
-                  </div>
-
-
+                </div>
+            </div>
         </div>
-
         {% endfor %}
-
     </div>
     <div style="padding-bottom: 10%"></div>
     {#######################################################}
@@ -70,9 +45,5 @@ body{
 </div>
 {% endblock content %} {#-- FOOTER E --#}
 {% block footer %} {#-- FOOTER S --#}
-       {{ super() }}
+{{ super() }}
 {% endblock footer %} {#-- FOOTER E --#}
-
-
-
-
