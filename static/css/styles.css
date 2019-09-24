@@ -7,6 +7,7 @@ body {
     background-position: top;
     background-color: #252525;
     font-family: 'Ubuntu', sans-serif;
+    line-height: 1.5;
     /*    background-size: 100% 100%;*/
 }
 
@@ -56,8 +57,38 @@ img:hover {
 }
 
 .navbar {
-    border-bottom: 5px solid #E8654A;
+    /*border-bottom: 5px solid #E8654A;*/
+    padding: 0rem 0rem;
+    line-height: 1;
 }
+
+/*.navbar a{
+    border-right: 1px solid #E8654A;
+}*/
+
+.nav_solid {
+ background-color: white;
+}
+
+.nav-link {
+    display: block;
+    margin: auto;
+    padding: 1rem 1rem;
+}
+
+.moz_button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
 
 .bg-dark {
     /*background-color: #02A58A!important;*/
@@ -163,12 +194,11 @@ footer h6 {
 }
 
 .avatar {
-    border-radius: 100%;
-    height: 40px;
-    margin-right: 10px;
-    width: 40px;
+    /* border-radius: 100%; */
+    /* height: 40px; */
+    /* margin-right: 10px; */
+    width: 50px;
     object-fit: cover;
-    /*border: 1px solid #7C7C7D;*/
 }
 
 .avatar2 {

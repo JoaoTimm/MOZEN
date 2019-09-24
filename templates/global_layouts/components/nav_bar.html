@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
 
 
-<a class="navbar-brand" href="{{ url_for('index') }}">
+<a class="navbar-brand"  style="margin-left: 1%" href="{{ url_for('index') }}">
     <img rel="prefetch" class="" src="{{ url_for('static', filename='img/svg/moz_logo.svg') }}"
         alt="triangle with all three sides equal" height="" width="80px"/>
     </a>
@@ -18,9 +18,7 @@
       <li class="nav-item">
         <a class="nav-link" href="#">About</a>
       </li>
-      {#<li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>#}
+
 
 
 
@@ -45,11 +43,12 @@
 
 
 {##################### SEARCH ###########################}
+
   <form class="form-inline text-cente" action="{{ url_for('blog.search') }}" method="post">
 
     {{ input_search_form.csrf_token }}
         {{ input_search_form.search(class_= "form-control form-control-lg") }}
-    <button class="btn btn-outline-success  btn-lg my-2 my-sm-0" type="submit">Search</button>
+    <button class="moz_button" style="background-color: #00ad9c" type="submit">Search</button>
 
   </form>
 
@@ -57,7 +56,7 @@
                 <li class="nav-item dropdown">
                 {% if current_user.is_authenticated %}
 <li class="nav-item">
- <a class="btn btn-primary btn-sm" style="" href="{{ url_for('blog.new')}}">new article</a>
+ <a class="btn" style="margin: auto; color: white" href="{{ url_for('blog.new')}}">new article</a>
 <a class="" href="{{ url_for('account.profile', user = current_user.username )}}">
 
     <img class="avatar" src="{{ image_file }}" alt="">
@@ -67,7 +66,7 @@
     {% endif %}
                     <a href="#" class="nav-link dropdown-toggle mx-auto" data-toggle="dropdown">
 
-                        {{ current_user.username }}
+                         <span style="color: white">{{ current_user.username }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="{{ url_for('account.update_account')}}">Profile</a>
@@ -83,7 +82,9 @@
 
 
 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">account</a>
+                            <a href="#" class="nav-link dropdown-toggle mx-auto" data-toggle="dropdown">
+                                <span style="color: white">Account</span>
+        </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="{{ url_for('auth.sign_up')}}">Sign Up</a>
                         {#<a class="dropdown-item" href="{{ url_for('auth.logout')}}">Logout</a>#}

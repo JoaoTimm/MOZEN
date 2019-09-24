@@ -9,6 +9,7 @@ from htmlmin.minify import html_minify
 
 from account.forms import UpdateAccountForm
 from app import db, app, current_user_image_file
+from blog.routes import search_form
 from models import User, Post
 
 account = Blueprint('account', __name__, template_folder='templates')
@@ -56,6 +57,7 @@ def update_account():
     return render_template('account/account.html',
                            title='Account',
                            image_file=current_user_image_file(),
+                           input_search_form=search_form(),
                            form=form)
 
 
@@ -71,8 +73,11 @@ def profile(user):
                                title='Account',
                                user=user,
                                image_file=current_user_image_file(),
+                               input_search_form=search_form(),
                                posts=posts)
     return render_template('account/profile.html',
                            title='Account',
                            user=user,
-                           posts=posts)
+                           posts=posts,
+                           input_search_form=search_form()
+                           )
