@@ -44,6 +44,15 @@
 <ul class="nav navbar-nav ml-auto">
 
 
+{##################### SEARCH ###########################}
+  <form class="form-inline text-cente" action="{{ url_for('blog.search') }}" method="post">
+
+    {{ input_search_form.csrf_token }}
+        {{ input_search_form.search(class_= "form-control form-control-lg") }}
+    <button class="btn btn-outline-success  btn-lg my-2 my-sm-0" type="submit">Search</button>
+
+  </form>
+
 {% if current_user.is_authenticated %}
                 <li class="nav-item dropdown">
                 {% if current_user.is_authenticated %}

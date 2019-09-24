@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from htmlmin.minify import html_minify
 from app import login_manager
 from auth.auth_forms import SignUp, SignIn
+from blog.routes import search_form
 from models import User, db
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -27,7 +28,10 @@ def sign_up():
         db.session.commit()
         flash('You Sign Up successfully.')
         return redirect(url_for('auth.home'))
-    return render_template('auth/sign-up.html', form=form)
+    return render_template('auth/sign-up.html',
+                           input_search_form=search_form(),
+                           form=form
+                           )
 
 
 @login_manager.user_loader
@@ -56,7 +60,10 @@ def sign_in():
             return redirect(session['url'])
         else:
             return redirect(url_for('index'))
-    return render_template('auth/sign-in.html', form=form)
+    return render_template('auth/sign-in.html',
+                           input_search_form=search_form(),
+                           form=form
+                           )
 
 
 @auth.route('/logout')

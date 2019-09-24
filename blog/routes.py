@@ -8,7 +8,7 @@ from htmlmin.minify import html_minify
 from slugify import slugify
 
 from app import db, app, current_user_image_file
-from blog.blog_forms import PostForm
+from blog.blog_forms import PostForm, SearchForm
 from models import Post
 
 blog = Blueprint('blog', __name__, template_folder='templates')
@@ -31,10 +31,14 @@ def all_posts():
     if current_user.is_authenticated:
         rendered_html = render_template('blog/all.html',
                                         posts=posts,
-                                        image_file=current_user_image_file())
+                                        image_file=current_user_image_file(),
+                                        input_search_form=search_form()
+                                        )
         return html_minify(rendered_html)
     rendered_html = render_template('blog/all.html',
-                                    posts=posts)
+                                    posts=posts,
+                                    input_search_form=search_form()
+                                    )
     return html_minify(rendered_html)
 
 
@@ -78,7 +82,9 @@ def new():
         return current_app.login_manager.unauthorized()
     rendered_html = render_template('blog/new.html',
                                     form=form,
-                                    image_file=current_user_image_file())
+                                    image_file=current_user_image_file(),
+                                    input_search_form=search_form()
+                                    )
     return html_minify(rendered_html)
 
 
@@ -116,7 +122,9 @@ def update_post(id):
                                     form=form,
                                     image_file=current_user_image_file(),
                                     post_image_file=post_image_file,
-                                    id=id)
+                                    input_search_form=search_form(),
+                                    id=id
+                                    )
     return html_minify(rendered_html)
 
 
@@ -139,12 +147,15 @@ def post(slug):
                                         title_post=title_post,
                                         title=title_post.title,
                                         image_file=current_user_image_file(),  # Pass image for profile
-                                        post_image_file=title_post.post_image_file)
+                                        post_image_file=title_post.post_image_file,
+                                        input_search_form=search_form()
+                                        )
         return html_minify(rendered_html)
     else:
         rendered_html = render_template('blog/post.html',
                                         title_post=title_post,
                                         title=title_post.title,
+                                        input_search_form=search_form(),
                                         # Pass post image file
                                         post_image_file=title_post.post_image_file)
         return html_minify(rendered_html)
@@ -161,17 +172,27 @@ def s():
     return render_template('blog/search_results.html', posts=posts)
 
 
+def search_form():
+    input_search_form = SearchForm()
+    return input_search_form
+
+
 @blog.route('/search', methods=['GET', 'POST'])
 def search():
     session['url'] = url_for('blog.all_posts')
+    search_q = request.form['search']
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.whoosh_search('Python').order_by(Post.date_posted.desc()).paginate(page=page,
+    posts = Post.query.whoosh_search(search_q).order_by(Post.date_posted.desc()).paginate(page=page,
                                                                                           per_page=8)
     if current_user.is_authenticated:
         rendered_html = render_template('blog/all.html',
                                         posts=posts,
-                                        image_file=current_user_image_file())
+                                        image_file=current_user_image_file(),
+                                        input_search_form=search_form()
+                                        )
         return html_minify(rendered_html)
     rendered_html = render_template('blog/all.html',
-                                    posts=posts)
+                                    posts=posts,
+                                    input_search_form=search_form()
+                                    )
     return html_minify(rendered_html)

@@ -10,3 +10,7 @@ class PostForm(FlaskForm):
     body = CKEditorField('body', validators=[validators.DataRequired()])
     tags = StringField(u'Tags', validators=[])
     submit = SubmitField('Save Post')
+
+
+class SearchForm(FlaskForm):
+    search = StringField(u'search', validators=[validators.DataRequired()])

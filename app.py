@@ -8,6 +8,8 @@ from flask_wtf import CSRFProtect
 from htmlmin.minify import html_minify
 import flask_whooshalchemy as wa  # pip3 install git+git://github.com/gyllstromk/Flask-WhooshAlchemy.git
 from flask_gzip import Gzip
+
+from blog.blog_forms import SearchForm
 from config import DevelopmentConfig, ProductionConfig
 
 app = Flask(__name__)
@@ -63,7 +65,7 @@ def current_user_image_file():
 # ######## BLUEPRINTS IMPORTS S ########
 from account.routes import account
 from auth.routes import auth
-from blog.routes import blog
+from blog.routes import blog, search_form
 
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(auth, url_prefix='/auth')
@@ -90,9 +92,13 @@ def make_session_permanent():
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        rendered_html = render_template('index.html', image_file=current_user_image_file())
+        rendered_html = render_template('index.html',
+                                        image_file=current_user_image_file(),
+                                        input_search_form=search_form()
+                                        )
         return html_minify(rendered_html)
-    rendered_html = render_template('index.html')
+    rendered_html = render_template('index.html',
+                                    input_search_form=search_form())
     return html_minify(rendered_html)
 
 
