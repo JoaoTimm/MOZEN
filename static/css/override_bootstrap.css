@@ -79,6 +79,9 @@
     border: 1px solid white;
 }
 
+.card-columns .card {
+    margin-bottom: 1rem;
+}
 
 /*###########################################*/
 
