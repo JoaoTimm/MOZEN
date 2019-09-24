@@ -1,7 +1,5 @@
 from datetime import datetime
-
 from flask_login import UserMixin
-
 from app import db, login_manager
 
 
@@ -36,7 +34,6 @@ class Post(db.Model):
     User form Update 
     Create a list of updated global pictures for reuse of Post uploaded pictures. 
     '''
-
     body = db.Column(db.String())
     tags = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

@@ -183,7 +183,7 @@ def search():
     search_q = request.form['search']
     page = request.args.get('page', 1, type=int)
     posts = Post.query.whoosh_search(search_q).order_by(Post.date_posted.desc()).paginate(page=page,
-                                                                                          per_page=8)
+                                                                                          per_page=posts_per_page)
     if current_user.is_authenticated:
         rendered_html = render_template('blog/all.html',
                                         posts=posts,
