@@ -1,53 +1,34 @@
 {% extends "global_layouts/main_single.html" %}
 {% block head %} {#-- FOOTER S --#}
-
-
-
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
-
-
-    <script>hljs.initHighlightingOnLoad();</script>
-
+<script>hljs.initHighlightingOnLoad();</script>
 {% endblock head %} {#-- FOOTER E --#}
 {% block content %} {#-- FOOTER S --#}
-{#<div class="container rounded-lg">#}
-<div id="image_post" class="container cont_extra rounded-lg g_shadow readable" style="padding: 3%;">
-    {#<img class="" style="width: 100%" src="{{ post_image_file }}">#}
-    <h1>{{ title_post.title }}</h1>
-        <img class="g_shadow rounded-lg image_top_bottom_spaced" style="width: 100%;" src="{{ url_for('static', filename = 'post_pics/' + title_post.post_image_file) }}" alt="">
-<hr class="mb-4">
-    {{ title_post.body|safe }}
-<hr class="mb-4">
-
-
-    {% if current_user.is_authenticated %}
-    {% if current_user == title_post.author %}
-    <ul class="nav">
-        <li class="nav-item nav_btn_space">
-            <a href="{{ url_for('blog.update_post', id=title_post.id) }}" class="btn btn btn-warning btn-sm" role="button">Update</a>
-        </li>
-        <li class="nav-item nav_btn_space">
-            <form action="{{ url_for('blog.delete_post', id=title_post.id) }}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <input class="btn btn-danger btn-sm" type="submit" value="Delete">
-            </form>
-        </li>
-    </ul>
-    {% endif %}
-    {% else %}
-    {% endif %}
-
-</div>
-
-
-
-
-
-{#</div>#}
+    <div id="image_post" class="container cont_extra rounded-lg g_shadow readable" style="padding: 3%;">
+        <h1>{{ post_title }}</h1>
+        Posted {{ date_posted }}
+        <img class="g_shadow rounded-lg image_top_bottom_spaced" style="width: 100%;" src="{{ url_for('static', filename = 'post_pics/' + post_image_file) }}" alt="">
+        <hr class="mb-4">
+        {{ body|safe }}
+        <hr class="mb-4">
+        {% if current_user.is_authenticated %}
+        {% if current_user == author %}
+        <ul class="nav">
+            <li class="nav-item nav_btn_space">
+                <a href="{{ url_for('blog.update_post', id=id) }}" class="btn btn btn-warning btn-sm" role="button">Update</a>
+            </li>
+            <li class="nav-item nav_btn_space">
+                <form action="{{ url_for('blog.delete_post', id=id) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input class="btn btn-danger btn-sm" type="submit" value="Delete">
+                </form>
+            </li>
+        </ul>
+        {% endif %}
+        {% else %}
+        {% endif %}
+    </div>
 {% endblock content %} {#-- FOOTER E --#}
-
 {% block footer %} {#-- FOOTER S --#}
-    {{ super() }}
-
+{{ super() }}
 {% endblock footer %} {#-- FOOTER E --#}
-

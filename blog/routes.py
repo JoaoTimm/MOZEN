@@ -1,17 +1,26 @@
 import os
 import secrets
 
+import arrow
 from PIL import Image
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 from flask_login import current_user, login_required
 from htmlmin.minify import html_minify
 from slugify import slugify
 
-from app import db, app, current_user_image_file
+from app import db, app, current_user_image_file, csrf
 from blog.blog_forms import PostForm, SearchForm
 from models import Post
 
 blog = Blueprint('blog', __name__, template_folder='templates')
+
+
+def time_since(self):
+    x = arrow.get(self)
+    return x.humanize()
+
+
+app.jinja_env.filters['time_since'] = time_since
 
 posts_per_page = 20
 
@@ -28,6 +37,7 @@ def all_posts():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page,
                                                                   per_page=posts_per_page)
+
     if current_user.is_authenticated:
         rendered_html = render_template('blog/all.html',
                                         posts=posts,
@@ -140,24 +150,24 @@ def delete_post(id):
 @blog.route('/<slug>', methods=['GET', 'POST'])
 def post(slug):
     title_post = Post.query.filter_by(slug=slug).first_or_404()
-    # post_image_file = url_for('static', filename=app.config['POST_PICTURE_PATH'] + title_post.post_image_file)
+    x = arrow.get(title_post.date_posted)
+    data = {
+        'title': title_post.title,
+        'post_title': title_post.title,
+        'date_posted': x.humanize(),
+        'body': title_post.body,
+        'author': title_post.author,
+        'id': title_post.id,
+        'post_image_file': title_post.post_image_file
+    }
     if current_user.is_authenticated:
-        print(title_post.post_image_file)
-        rendered_html = render_template('blog/post.html',
-                                        title_post=title_post,
-                                        title=title_post.title,
+        rendered_html = render_template('blog/post.html', **data,
                                         image_file=current_user_image_file(),  # Pass image for profile
-                                        post_image_file=title_post.post_image_file,
-                                        input_search_form=search_form()
-                                        )
+                                        input_search_form=search_form())
         return html_minify(rendered_html)
     else:
-        rendered_html = render_template('blog/post.html',
-                                        title_post=title_post,
-                                        title=title_post.title,
-                                        input_search_form=search_form(),
-                                        # Pass post image file
-                                        post_image_file=title_post.post_image_file)
+        rendered_html = render_template('blog/post.html', **data,
+                                        input_search_form=search_form())
         return html_minify(rendered_html)
 
 
@@ -178,6 +188,7 @@ def search_form():
 
 
 @blog.route('/search', methods=['GET', 'POST'])
+@csrf.exempt
 def search():
     session['url'] = url_for('blog.all_posts')
     search_q = request.form['search']
