@@ -16,6 +16,7 @@ blog = Blueprint('blog', __name__, template_folder='templates')
 
 
 # CREATE A LINK TO USER PUBLIC ACC S
+# ----------------------------------------------------------------------------------------------------------------------
 def acc_profile_link(self):
     """
     Instead of hard coding the Url to the User acc
@@ -36,16 +37,41 @@ def acc_profile_link(self):
 app.jinja_env.filters['acc_profile_link'] = acc_profile_link
 
 
+# ----------------------------------------------------------------------------------------------------------------------
 # CREATE A LINK TO USER PUBLIC ACC E
 
 # Time Since S
+# ----------------------------------------------------------------------------------------------------------------------
 def time_since(self):
     x = arrow.get(self)
     return x.humanize()
 
 
 app.jinja_env.filters['time_since'] = time_since
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 # Time Since E
+
+# VARIABLES / Global Func
+
+def save_picture(post_form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(post_form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/post_pics', picture_fn)
+
+    output_size = (1250, 1250)
+    i = Image.open(post_form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
+
+def search_form():
+    input_search_form = SearchForm()
+    return input_search_form
 
 
 posts_per_page = 20
@@ -53,9 +79,6 @@ posts_per_page = 20
 
 @blog.route('/')
 def home():
-    session['url'] = request.url
-    z = acc_profile_link("timm")
-    print(z)
     return render_template('blog/index.html', input_search_form=search_form())
 
 
@@ -78,20 +101,6 @@ def all_posts():
                                     input_search_form=search_form()
                                     )
     return html_minify(rendered_html)
-
-
-def save_picture(post_form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(post_form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/post_pics', picture_fn)
-
-    output_size = (1250, 1250)
-    i = Image.open(post_form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
-
-    return picture_fn
 
 
 @blog.route('/new', methods=['GET', 'POST'])
@@ -160,9 +169,7 @@ def update_post(id):
                                     form=form,
                                     image_file=current_user_image_file(),
                                     post_image_file=post_image_file,
-                                    input_search_form=search_form(),
-                                    id=id
-                                    )
+                                    input_search_form=search_form())
     return html_minify(rendered_html)
 
 
@@ -208,11 +215,6 @@ def s():
         print(i.id)
     '''
     return render_template('blog/search_results.html', posts=posts)
-
-
-def search_form():
-    input_search_form = SearchForm()
-    return input_search_form
 
 
 @blog.route('/search', methods=['GET', 'POST'])
