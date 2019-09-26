@@ -18,7 +18,7 @@
                 <div class="flex">
                     <img class="avatar" style="margin-right: 2%" src="{{ url_for('static', filename = 'profile_pics/' + i.author.image_file) }}" alt="i.author.username">
                     <div>
-                        <a class="name" href="{{ url_for('account.profile', user= i.author.username )}}">{{ i.author.username }}</a>
+                        <a class="name" href="{{  i.author.username | acc_profile_link() }}">{{ i.author.username }}</a>
                         <div class="published">{{ i.date_posted | time_since() }}</div>
                     </div>
                 </div>

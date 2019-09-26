@@ -15,12 +15,38 @@ from models import Post
 blog = Blueprint('blog', __name__, template_folder='templates')
 
 
+# CREATE A LINK TO USER PUBLIC ACC S
+def acc_profile_link(self):
+    """
+    Instead of hard coding the Url to the User acc
+    I use a custom Jinja2 function that if in the future I change
+    the Profile view, I will not have to change all the hard coded ulr in all the files.
+
+    Instead of the following:
+        <a class="name" href="{{ url_for('account.profile', user= i.author.username )}}">{{ i.author.username }}</a>
+
+    We do this:
+        <a class="name" href="{{  i.author.username | acc_profile_link() }}">{{ i.author.username }}</a>
+
+    """
+    x = url_for('account.profile', user=self)
+    return x
+
+
+app.jinja_env.filters['acc_profile_link'] = acc_profile_link
+
+
+# CREATE A LINK TO USER PUBLIC ACC E
+
+# Time Since S
 def time_since(self):
     x = arrow.get(self)
     return x.humanize()
 
 
 app.jinja_env.filters['time_since'] = time_since
+# Time Since E
+
 
 posts_per_page = 20
 
@@ -28,7 +54,9 @@ posts_per_page = 20
 @blog.route('/')
 def home():
     session['url'] = request.url
-    return render_template('blog/index.html')
+    z = acc_profile_link("timm")
+    print(z)
+    return render_template('blog/index.html', input_search_form=search_form())
 
 
 @blog.route('/all', methods=['GET', 'POST'])
