@@ -139,6 +139,7 @@ def index():
     posts = Post.query.order_by(Post.date_posted.desc()).limit(15).all()
     if current_user.is_authenticated:
         rendered_html = render_template('index.html',
+                                        **holders,
                                         posts=posts,
                                         image_file=current_user_image_file(),
                                         input_search_form=search_form()
