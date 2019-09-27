@@ -1,3 +1,4 @@
+import arrow
 from flask import Flask, render_template, url_for, request, session
 from flask_assets import Environment, Bundle
 from flask_ckeditor import CKEditor
@@ -83,21 +84,69 @@ wa.whoosh_index(app, Post)
 
 # ######## BLUEPRINTS IMPORTS E #########
 
+# ############################
+def acc_profile_link(self):
+    """
+    Instead of hard coding the Url to the User acc
+    I use a custom Jinja2 function that if in the future I change
+    the Profile view, I will not have to change all the hard coded ulr in all the files.
+
+    Instead of the following:
+        <a class="name" href="{{ url_for('account.profile', user= i.author.username )}}">{{ i.author.username }}</a>
+
+    We do this:
+        <a class="name" href="{{  i.author.username | acc_profile_link() }}">{{ i.author.username }}</a>
+
+    """
+    x = url_for('account.profile', user=self)
+    return x
+
+
+app.jinja_env.filters['acc_profile_link'] = acc_profile_link
+
+
+def time_since(self):
+    x = arrow.get(self)
+    return x.humanize()
+
+
+app.jinja_env.filters['time_since'] = time_since
+
+
+def img_placeholder(a, z):
+    x = f"https://via.placeholder.com/{a}x{z}"
+    return x
+
+
+app.jinja_env.filters['img_placeholder'] = img_placeholder
+
+
+# ###########################
+
 
 @app.before_request
 def make_session_permanent():
     session.permanent = True
 
 
+holders = {
+    "img1": img_placeholder(1800, 400)
+}
+
+
 @app.route('/')
 def index():
+    posts = Post.query.order_by(Post.date_posted.desc()).limit(15).all()
     if current_user.is_authenticated:
         rendered_html = render_template('index.html',
+                                        posts=posts,
                                         image_file=current_user_image_file(),
                                         input_search_form=search_form()
                                         )
         return html_minify(rendered_html)
     rendered_html = render_template('index.html',
+                                    **holders,
+                                    posts=posts,
                                     input_search_form=search_form())
     return html_minify(rendered_html)
 

@@ -14,13 +14,52 @@
     </div>
     {% endfor %}
 
-<div class="container">
+<div class="container-fluid">
 
     {% if current_user.is_authenticated %}
 
 {% endif %}
 
-    {% include "global_layouts/components/jumbotron.html" ignore missing %}
+{#    {% include "global_layouts/components/jumbotron.html" ignore missing %}#}
+<img class="g_shadow rounded-lg" style="width: 100%; margin-top: 2%" src="{{ img1 }}" alt="Italian Trulli">
+</div>
+
+<div class="container-fluid">
+<div class="row">
+
+    <div class="col-sm-9" style="margin-top: 25px">
+<div class="card-columns card-columns_home">
+        {% for i in posts %}
+        <div class="card animation-target g_shadow">
+            <a href="{{ url_for('blog.post', slug = i.slug ) }}">
+            <img class="{#grey_img#}" style="width: 100%; margin-bottom: 2%" src="{{ url_for('static', filename = 'post_pics/' + i.post_image_file) }}" alt="">
+            </a>
+            <div class="card-body">
+                <a href="{{ url_for('blog.post', slug = i.slug ) }}">
+                    <h5 class="card-title">{{ i.title }}</h5>
+                </a>
+            </div>
+            <div class="bio" style="background-color: white; padding: 2%">
+                <div class="flex">
+                    <img class="avatar" style="margin-right: 2%" src="{{ url_for('static', filename = 'profile_pics/' + i.author.image_file) }}" alt="i.author.username">
+                    <div>
+                        <a class="name" href="{{  i.author.username | acc_profile_link() }}">{{ i.author.username }}</a>
+                        <div class="published">{{ i.date_posted | time_since() }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+    <div class="col-sm-3">
+
+        <img class="g_shadow rounded-lg" style="width: 100%; margin-top: 25px" src="{{ img1 }}" alt="Italian Trulli">
+
+    </div>
+
+
+</div>
 </div>
 
 

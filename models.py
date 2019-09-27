@@ -24,16 +24,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     slug = db.Column(db.String())
-
-    # Post Img File
     post_image_file = db.Column(db.String(20), nullable=False, default='post_default.webp')
-    '''
-    Default Picture 
-                name : post_default.webp
-                folder: static/profile_pics
-    User form Update 
-    Create a list of updated global pictures for reuse of Post uploaded pictures. 
-    '''
     body = db.Column(db.String())
     tags = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
