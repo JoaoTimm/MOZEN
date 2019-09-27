@@ -114,8 +114,8 @@ app.jinja_env.filters['time_since'] = time_since
 
 
 def img_placeholder(a, z):
-    x = f"https://via.placeholder.com/{a}x{z}"
-    return x
+    img = f"https://via.placeholder.com/{a}x{z}"
+    return img
 
 
 app.jinja_env.filters['img_placeholder'] = img_placeholder
@@ -153,4 +153,8 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(
+        use_reloader=True,  # restart the python process if modules were changed
+        use_debugger=True,
+        use_evalex=True
+    )
