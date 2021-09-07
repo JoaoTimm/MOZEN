@@ -32,4 +32,4 @@ webassets==0.12.1
 webencodings==0.5.1
 Werkzeug==0.15.6
 Whoosh==2.6.0
-WTForms==2.2.1
+WTForms==3.0.0a1
